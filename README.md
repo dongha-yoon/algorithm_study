@@ -1,7 +1,5 @@
 # algorithm_study
 
-* 일단 자기 이름 폴더 만들어 주세요!
-
 ## 시작하기
 1. 원하는 폴더에서 git clone
 ```bash
