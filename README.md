@@ -13,4 +13,4 @@ git checkout -b <브랜치 이름>
 
 
 
-![img1](./img/image1.png)
+![img1](./img/image1.jpg)
