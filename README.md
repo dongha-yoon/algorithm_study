@@ -25,12 +25,12 @@ git push origin <브랜치 이름> #코드를 github에 업로드
 
 1. 코드 push후 github 프로젝트 코드 페이지에서 **Compare & pull request** 클릭
 
-![img1](./img/image1.jpg){: width="500"}
+![img1](./img/image1.jpg){: width="500" height="300}
 
 2. 제목(어떤 문제 풀었는지), 내용(어떻게 풀었는지) 작성 후 **Create pull request**작성
 
-![img2](./img/image2.jpg){: width="500"}
+![img2](./img/image2.jpg){: width="500" height="300}
 
 3. 피드백 주고 받기 후 Merge
 
-![img3](./img/image3.jpg){: width="500"}
+![img3](./img/image3.jpg){: width="500" height="300}
