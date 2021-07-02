@@ -19,8 +19,7 @@ string solution(string number, int k) {
             break;
     }
     start = min(start,k);
-    // cout << number << " " << start << endl;
-    
+
     if(start == 0 && number[start]== '0'){
         while(number[start] == '0')
             start++;
@@ -30,10 +29,7 @@ string solution(string number, int k) {
             start--;
     }
         
-
     number.erase(0,start);
-    // cout << number << " " << start << endl;
-    // cout << number << endl;
 
     while(number.size() > size-k){
         bool found = false;
@@ -54,8 +50,6 @@ string solution(string number, int k) {
         }
         if(!found)
             number.erase(min_idx,1);
-
-        // cout << number << endl;
     }
 
     return number;
