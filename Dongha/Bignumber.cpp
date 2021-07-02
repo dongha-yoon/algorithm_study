@@ -9,7 +9,7 @@ string solution(string number, int k) {
 
     int start = 0;
     int max = 0;
-    for(int i = 0; i<size-k+1; i++){
+    for(int i = 0; i<k; i++){
         int digit = (int)number[i]-48;
         if(max < digit){
             max = digit;
@@ -18,24 +18,42 @@ string solution(string number, int k) {
         if(max == 9)
             break;
     }
+    start = min(start,k);
+    // cout << number << " " << start << endl;
+    
+    if(start == 0 && number[start]== '0'){
+        while(number[start] == '0')
+            start++;
+    }
+    else{
+        while(number[start] == '0')
+            start--;
+    }
+        
 
-    // cout << number << endl;
-
-    number.erase(0,min(start,k));
-
+    number.erase(0,start);
+    // cout << number << " " << start << endl;
     // cout << number << endl;
 
     while(number.size() > size-k){
         bool found = false;
-        for(int i = 1; i < number.size()-1; i++){
-            if(number[i] < number[i+1]){
-                number.erase(i,1);
+        int min = (int)'9';
+        int min_idx = 0;
+
+        for(int i = 1; i < number.size(); i++){
+            if(min >= number[i]){
+                min = number[i];
+                min_idx = i;
+            }
+
+            if(number[i-1] < number[i]){
+                number.erase(i-1,1);
                 found = true;
                 break;
             }
         }
         if(!found)
-            number.erase(number.size()-1,1);
+            number.erase(min_idx,1);
 
         // cout << number << endl;
     }
@@ -44,8 +62,8 @@ string solution(string number, int k) {
 }
 
 int main(){
-    string number = "9876";
-    int k = 1;
+    string number = "000090001000100";
+    int k = 7;
 
     cout << solution(number, k) << endl;
 }
