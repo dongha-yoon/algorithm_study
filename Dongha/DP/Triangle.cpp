@@ -1,4 +1,3 @@
-//https://programmers.co.kr/learn/courses/30/lessons/43105
 #include <string>
 #include <vector>
 

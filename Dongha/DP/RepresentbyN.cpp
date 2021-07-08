@@ -4,91 +4,97 @@
 #include <string>
 #include <vector>
 #include <cmath>
+#include <map>
 
 using namespace std;
-#define MAX 300000
+#define SIZE 32001
 
-int DP[MAX];
+vector<vector<int>> countList;
+map<int,int> DP; //(num, cnt)
+map<int,vector<int>> pending;//(cnt, num list)
 
-void init(int N){
-    int count = 1;
-    int num = N;
-    while(num<MAX){
-        DP[num] = count;
-        DP[num/N] = DP[num-N] = DP[num+N] = count+1;
-
-        num = num*10 + N;
-        count++;
+void setDP(int num, int cnt, int N){
+    // printf("num: %d, cnt: %d\n",num, cnt);
+    if(DP[num+N] == 0){
+        DP[num+N] = cnt+1;
+        countList[cnt+1].push_back(num+N);
     }
+    // printf("1 ");
+    if(num-N > 0 && DP[num-N] == 0){
+        DP[num-N] = cnt+1;
+        countList[cnt+1].push_back(num-N);
+    }
+    // printf("2 ");
+    if(DP[num*N] == 0){
+        DP[num*N] = cnt+1;
+        countList[cnt+1].push_back(num*N);
+    }
+    // printf("3 ");
+    if( num%N ==0 && DP[num/N] == 0){
+        DP[num/N] = cnt+1;
+        countList[cnt+1].push_back(num/N);
+    }
+    // printf("4\n");
+    int cnt1 = cnt;
+    int num1 = num;
+    for(int cnt2=1; cnt2<=cnt1; cnt2++){
+        if(cnt1 + cnt2 <= 8){
+            for(int num2: countList[cnt2]){
+                if(DP[num1+num2] == 0)
+                    pending[cnt1+cnt2].push_back(num1+num2);
+                if(num1-num2 > 0 && DP[num1-num2] == 0)
+                    pending[cnt1+cnt2].push_back(num1-num2);
+                else if(num2-num1 > 0 && DP[num2-num1] == 0)
+                    pending[cnt1+cnt2].push_back(num2-num1);                    
+                if(DP[num1*num2] == 0)
+                    pending[cnt1+cnt2].push_back(num1*num2);
+                if(num1%num2==0 && DP[num1/num2] == 0)
+                    pending[cnt1+cnt2].push_back(num1/num2);
+                else if(num2%num1==0 && DP[num2/num1] == 0)
+                    pending[cnt1+cnt2].push_back(num2/num1);
+            }
+        }    
+    }
+        
 }
 
 
 int solution(int N, int number) {
+    //initialize
+    countList.resize(10);
 
-    if(number >= MAX)
-        return MAX;
+    int nnn = N;
+    for(int cnt=1; cnt<=8;cnt++){
+        // printf("cnt: %d\n",cnt);
+        countList[cnt].push_back(nnn);
+        if(nnn < SIZE)
+            DP[nnn] = cnt;
+        nnn = nnn*10 + N;
 
-    if(DP[number] != 0)
-        return DP[number];
-
-    if(number == 1)
-        return DP[number] = 2;
-
-    if(number < N)
-        return DP[number] = number+1;
-    // printf("%d\n",number);
-    int min = 10;
-
-    int temp1 = DP[number+N]+1;
-    int temp2 = DP[number-N]+1;
-    int temp3 = DP[number/N]+1;
-    temp3 = number%N==0?temp3:MAX;
-    int temp4 = DP[number*N]+1;
-    if(temp1 !=0 && temp1 < min)
-        min = temp1;
-    if(temp2 !=0 && temp2 < min)
-        min = temp1;
-    if(temp3 !=0 && temp3 < min)
-        min = temp1;
-    if(temp4 !=0 && temp4 < min)
-        min = temp1;
-    
-    
-    for(int i=1; i<=number/2; i++){
-        if(i != 1 && i <= sqrt(number) && number%i==0){
-            int temp = solution(N,i) + solution(N,number/i);
-            if(temp < min)
-                min = temp;
+        for(int i: pending[cnt]){
+            if(DP[i] == 0){
+                DP[i] = cnt;
+                countList[cnt].push_back(i);
+            }
         }
-        int temp = solution(N,i) + solution(N,number-i);
-        if(temp < min)
-            min = temp;
+        for(int i: countList[cnt]){
+            setDP(i, cnt, N);
+        }
+            
     }
-
-    if(min > 7){
-        DP[number] = MAX;
-    }
-    else
-        DP[number] = min;
-
-    return DP[number];
+    return (DP[number]==0||DP[number]>8)?-1:DP[number];
 }
 
 int main(){
-    int N = 5;
-    init(N);
-    
+    int N;
+    int num;
+    cin >> N >> num;
+    // cout << "==============" << endl;
+    cout << solution(N,num) << endl;
 
-    cout << "==============" << endl;
-    cout << solution(N,32000) << endl;
-
-    // for(int i=0;i<MAX;i++){
-    //     bool flag = DP[i] != 0 && DP[i] != MAX;
-    //     if(flag)
-    //         printf("%d: %d\n",i,DP[i]);
+    // for(pair<int,int> p: DP){
+    //     if(p.second != 0 && p.second != 8)
+    //         printf("%d: %d\n",p.first, p.second);
     // }
-
-    cout << solution(N,12) << endl;
-
 
 }
