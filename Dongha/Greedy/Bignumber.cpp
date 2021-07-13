@@ -6,7 +6,6 @@ using namespace std;
 
 string solution(string number, int k) {
     int size = number.length();
-
     int start = 0;
     int max = 0;
     for(int i = 0; i<k; i++){
