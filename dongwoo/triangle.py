@@ -9,5 +9,3 @@ def solution(triangle):
                                   
     answer = triangle[0][0] #모든 loop가 끝나면 답은 triangle의 맨 첫 요소가 되므로 그것을 answer에 할당합니다.
     return answer
-
-solution(triangle)
